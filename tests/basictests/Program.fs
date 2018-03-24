@@ -3,6 +3,7 @@ module main
 open System
 open OpenQA.Selenium
 open Canopy
+open Canopy.Logging
 open Canopy.Runner
 open Canopy.Runner.Runner
 open Canopy.Runner.Runner.Operators
@@ -18,7 +19,8 @@ let config =
         paths = { defaultConfig.paths with chromeDir = executingDir() }
         elementTimeout = TimeSpan.FromSeconds 3.0
         compareTimeout = TimeSpan.FromSeconds 3.0
-        pageTimeout = TimeSpan.FromSeconds 3.0 }
+        pageTimeout = TimeSpan.FromSeconds 3.0
+        logLevelOnStatics = Verbose }
 ignore (startWithConfig config chrome)
 
 let mainBrowser = browser
@@ -252,7 +254,10 @@ test (fun _ ->
 "rightClicking Works" &&& fun _ ->
     !^ "https://api.jquery.com/contextmenu/"
     let iframe = element "iframe"
+    if isNull browser then failwith "browser null"
+    if isNull iframe then failwith "iframe null"
     browser.SwitchTo().Frame(iframe) |> ignore
+
     notDisplayed ".contextmenu"
 
     rightClick "div:first"

@@ -36,10 +36,13 @@ let init () =
 
 let x = init ()
 
-x.url "https://qvitoo.dev:8080"
+// x.url "https://qvitoo.dev:8080"
+x.url "https://staging.qvitoo.com"
 
 let signup () =
-    x.click (x.element ".button.signup")
+    x.scrollTo ".button.signup"
+    // scrollToC x ".button.signup"
+    x.click ".button.signup"
     x.write "Test User 1" "#name"
     x.write "test5@example.com" "#email"
     x.press tab
